@@ -1,13 +1,12 @@
 <template>
-  <div>
-    <NuxtRouteAnnouncer />
-    <NuxtWelcome />
-    FundRaise Demo
+  <main>
+    <h1>FundRaise Demo</h1>
 
-Helping communities. Changing lives.
+    <p>Helping communities. Changing lives.</p>
 
-[View Campaigns]
-
-[Donate Now]
-  </div>
+    <div>
+      <button>View Campaigns</button>
+      <button>Donate Now</button>
+    </div>
+  </main>
 </template>
