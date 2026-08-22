@@ -1,25 +1,33 @@
 <script setup lang="ts">
-const campaigns = [
+import type {Campaign} from '~/types/campaign'
+
+const campaigns: Campaign[] = [
   {
+    id: 1,
     title: 'Feed a Family',
     description:
       'Help provide nutritious meals to families facing food insecurity.',
-    raised: 'E12,500',
-    goal: 'E20,000'
+    raised: 12500,
+    goal: 20000,
+    status: 'active'
   },
   {
+    id: 2,
     title: 'Education for All',
     description:
       'Help provide learning resources and opportunities for children.',
-    raised: 'E8,000',
-    goal: 'E15,000'
+    raised: 8000,
+    goal: 15000,
+    status: 'active'
   },
   {
+    id: 3,
     title: 'Clean Water Project',
     description:
       'Help communities gain access to safe and clean drinking water.',
-    raised: 'E18,000',
-    goal: 'E25,000'
+    raised: 18000,
+    goal: 25000,
+    status: 'active'
   }
 ]
 </script>
@@ -43,13 +51,15 @@ const campaigns = [
       </div>
 
       <div class="campaign-grid">
-        <CampaignCard
+       <CampaignCard
           v-for="campaign in campaigns"
-          :key="campaign.title"
+          :key="campaign.id"
+          :id="campaign.id"
           :title="campaign.title"
           :description="campaign.description"
           :raised="campaign.raised"
           :goal="campaign.goal"
+          :status="campaign.status"
         />
       </div>
     </section>

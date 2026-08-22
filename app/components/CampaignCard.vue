@@ -1,10 +1,20 @@
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
+  id: number
   title: string
   description: string
-  goal: string
-  raised: string
+  goal: number
+  raised: number
+  status: 'active' | 'completed' | 'draft'
 }>()
+
+const progress = computed(() => {
+  if (props.goal === 0) {
+    return 0
+  }
+
+  return Math.min((props.raised / props.goal) * 100, 100)
+})
 </script>
 
 <template>
@@ -22,12 +32,15 @@ defineProps<{
 
       <div class="campaign-progress">
         <div class="progress-info">
-          <span>Raised: {{ raised }}</span>
-          <span>Goal: {{ goal }}</span>
+          <span>Raised: E{{ raised.toLocaleString() }}</span>
+          <span>Goal: E{{ goal.toLocaleString() }}</span>
         </div>
 
         <div class="progress-bar">
-          <div class="progress-fill"></div>
+          <div
+            class="progress-fill"
+            :style="{ width: `${progress}%` }"
+          ></div>
         </div>
       </div>
 
@@ -83,7 +96,6 @@ defineProps<{
 }
 
 .progress-fill {
-  width: 65%;
   height: 100%;
   background: #222;
 }
@@ -94,6 +106,7 @@ defineProps<{
   text-decoration: none;
   font-weight: bold;
 }
+
 @media (max-width: 768px) {
   .campaign-content {
     padding: 20px;
