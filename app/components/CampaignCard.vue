@@ -44,7 +44,7 @@ const progress = computed(() => {
         </div>
       </div>
 
-      <NuxtLink to="/campaigns" class="campaign-button">
+      <NuxtLink :to="`/campaigns/${id}`" class="campaign-button">
         View Campaign
       </NuxtLink>
     </div>
