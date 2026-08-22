@@ -24,8 +24,8 @@ export const campaigns: Campaign[] = [
     title: 'Clean Water Project',
     description:
       'Help communities gain access to safe and clean drinking water.',
-    raised: 18000,
+    raised: 25000,
     goal: 25000,
-    status: 'active'
+    status: 'completed'
   }
 ]
