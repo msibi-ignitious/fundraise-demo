@@ -94,4 +94,9 @@ defineProps<{
   text-decoration: none;
   font-weight: bold;
 }
+@media (max-width: 768px) {
+  .campaign-content {
+    padding: 20px;
+  }
+}
 </style>

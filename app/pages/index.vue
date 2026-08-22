@@ -1,3 +1,29 @@
+<script setup lang="ts">
+const campaigns = [
+  {
+    title: 'Feed a Family',
+    description:
+      'Help provide nutritious meals to families facing food insecurity.',
+    raised: 'E12,500',
+    goal: 'E20,000'
+  },
+  {
+    title: 'Education for All',
+    description:
+      'Help provide learning resources and opportunities for children.',
+    raised: 'E8,000',
+    goal: 'E15,000'
+  },
+  {
+    title: 'Clean Water Project',
+    description:
+      'Help communities gain access to safe and clean drinking water.',
+    raised: 'E18,000',
+    goal: 'E25,000'
+  }
+]
+</script>
+
 <template>
   <div>
     <HeroSection />
@@ -7,7 +33,9 @@
     <section class="featured-campaigns">
       <div class="section-header">
         <p class="eyebrow">FEATURED CAMPAIGNS</p>
+
         <h2>Support a Cause That Matters</h2>
+
         <p>
           Discover campaigns that are creating meaningful change and find a
           cause you would like to support.
@@ -16,24 +44,12 @@
 
       <div class="campaign-grid">
         <CampaignCard
-          title="Feed a Family"
-          description="Help provide nutritious meals to families facing food insecurity."
-          raised="E12,500"
-          goal="E20,000"
-        />
-
-        <CampaignCard
-          title="Education for All"
-          description="Help provide learning resources and opportunities for children."
-          raised="E8,000"
-          goal="E15,000"
-        />
-
-        <CampaignCard
-          title="Clean Water Project"
-          description="Help communities gain access to safe and clean drinking water."
-          raised="E18,000"
-          goal="E25,000"
+          v-for="campaign in campaigns"
+          :key="campaign.title"
+          :title="campaign.title"
+          :description="campaign.description"
+          :raised="campaign.raised"
+          :goal="campaign.goal"
         />
       </div>
     </section>
@@ -73,5 +89,21 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 25px;
+}
+
+@media (max-width: 900px) {
+  .campaign-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .campaign-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-campaigns {
+    padding: 60px 20px;
+  }
 }
 </style>
