@@ -17,73 +17,68 @@ if (!campaign) {
 }
 
 const progress = computed(() => {
-  if (campaign.goal === 0) {
+  if (campaign.goal <= 0) {
     return 0
   }
 
   return Math.min(
-    (campaign.raised / campaign.goal) * 100,
+    Math.round((campaign.raised / campaign.goal) * 100),
     100
   )
 })
 </script>
 
 <template>
-  <main class="campaign-page">
+  <main class="campaign-detail">
+
     <NuxtLink to="/campaigns" class="back-link">
       ← Back to Campaigns
     </NuxtLink>
 
-    <section class="campaign-hero">
-      <div class="campaign-image">
-        Campaign Image
+    <h1>{{ campaign.title }}</h1>
+
+    <p class="status">
+      {{ campaign.status }}
+    </p>
+
+    <p class="description">
+      {{ campaign.description }}
+    </p>
+
+    <div class="funding">
+      <strong>
+        E{{ campaign.raised.toLocaleString() }}
+      </strong>
+
+      <span>
+        raised of E{{ campaign.goal.toLocaleString() }}
+      </span>
+
+      <div class="progress-bar">
+        <div
+          class="progress-fill"
+          :style="{ width: `${progress}%` }"
+        ></div>
       </div>
 
-      <div class="campaign-details">
-        <p class="status">
-          {{ campaign.status }}
-        </p>
+      <p>
+        {{ progress }}% funded
+      </p>
+    </div>
 
-        <h1>{{ campaign.title }}</h1>
+    <NuxtLink
+      :to="`/donate?campaign=${campaign.id}`"
+      class="donate-button"
+    >
+      Donate to this Campaign
+    </NuxtLink>
 
-        <p class="description">
-          {{ campaign.description }}
-        </p>
-
-        <div class="funding-info">
-          <div class="amounts">
-            <span>
-              Raised: <strong>E{{ campaign.raised.toLocaleString() }}</strong>
-            </span>
-
-            <span>
-              Goal: <strong>E{{ campaign.goal.toLocaleString() }}</strong>
-            </span>
-          </div>
-
-          <div class="progress-bar">
-            <div
-              class="progress-fill"
-              :style="{ width: `${progress}%` }"
-            ></div>
-          </div>
-
-          <p class="percentage">
-            {{ progress.toFixed(1) }}% funded
-          </p>
-        </div>
-
-        <NuxtLink to="/donate" class="donate-button">
-          Donate to this Campaign
-        </NuxtLink>
-      </div>
-    </section>
   </main>
 </template>
 
 <style scoped>
-.campaign-page {
-  max-width: 1100px;
+.campaign-detail {
+  max-width: 900px;
   margin: 0 auto;
   padding: 60px 40px;
 }
@@ -91,63 +86,44 @@ const progress = computed(() => {
 .back-link {
   display: inline-block;
   margin-bottom: 30px;
-  color: inherit;
   text-decoration: none;
+  color: inherit;
   font-weight: bold;
 }
 
-.campaign-hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 50px;
-  align-items: start;
-}
-
-.campaign-image {
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #e9ecef;
-  font-weight: bold;
-  border-radius: 8px;
+h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
 }
 
 .status {
-  display: inline-block;
-  margin-top: 0;
   text-transform: uppercase;
   font-size: 0.8rem;
   font-weight: bold;
   letter-spacing: 1px;
 }
 
-h1 {
-  font-size: 3rem;
-  margin: 15px 0;
-}
-
 .description {
-  font-size: 1.1rem;
+  max-width: 700px;
   line-height: 1.7;
+  font-size: 1.1rem;
 }
 
-.funding-info {
-  margin-top: 35px;
+.funding {
+  max-width: 500px;
+  margin-top: 30px;
 }
 
-.amounts {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-  margin-bottom: 10px;
+.funding strong {
+  margin-right: 8px;
 }
 
 .progress-bar {
-  height: 12px;
+  height: 10px;
+  margin-top: 15px;
   overflow: hidden;
-  background: #e5e5e5;
   border-radius: 20px;
+  background: #e5e5e5;
 }
 
 .progress-fill {
@@ -155,42 +131,24 @@ h1 {
   background: #222;
 }
 
-.percentage {
-  margin-top: 10px;
-}
-
 .donate-button {
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 30px;
   padding: 14px 24px;
+  border-radius: 6px;
   background: #222;
   color: white;
-  border-radius: 6px;
   text-decoration: none;
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
-  .campaign-page {
+@media (max-width: 600px) {
+  .campaign-detail {
     padding: 40px 20px;
-  }
-
-  .campaign-hero {
-    grid-template-columns: 1fr;
-    gap: 30px;
-  }
-
-  .campaign-image {
-    min-height: 250px;
   }
 
   h1 {
     font-size: 2.2rem;
-  }
-
-  .amounts {
-    flex-direction: column;
-    gap: 8px;
   }
 }
 </style>
