@@ -9,31 +9,43 @@ const props = defineProps<{
 }>()
 
 const progress = computed(() => {
-  if (props.goal === 0) {
+  if (props.goal <= 0) {
     return 0
   }
 
-  return Math.min((props.raised / props.goal) * 100, 100)
+  return Math.min(
+    Math.round((props.raised / props.goal) * 100),
+    100
+  )
 })
 </script>
 
 <template>
   <article class="campaign-card">
     <div class="campaign-image">
-      Campaign Image
+      <span>{{ title }}</span>
     </div>
 
     <div class="campaign-content">
-      <h3>{{ title }}</h3>
+      <div class="campaign-status">
+        {{ status }}
+      </div>
+
+      <h2>{{ title }}</h2>
 
       <p class="description">
         {{ description }}
       </p>
 
-      <div class="campaign-progress">
-        <div class="progress-info">
-          <span>Raised: E{{ raised.toLocaleString() }}</span>
-          <span>Goal: E{{ goal.toLocaleString() }}</span>
+      <div class="funding">
+        <div class="funding-values">
+          <strong>
+            E{{ raised.toLocaleString() }}
+          </strong>
+
+          <span>
+            of E{{ goal.toLocaleString() }}
+          </span>
         </div>
 
         <div class="progress-bar">
@@ -42,9 +54,16 @@ const progress = computed(() => {
             :style="{ width: `${progress}%` }"
           ></div>
         </div>
+
+        <p class="progress-text">
+          {{ progress }}% funded
+        </p>
       </div>
 
-      <NuxtLink :to="`/campaigns/${id}`" class="campaign-button">
+      <NuxtLink
+        :to="`/campaigns/${id}`"
+        class="campaign-button"
+      >
         View Campaign
       </NuxtLink>
     </div>
@@ -55,7 +74,7 @@ const progress = computed(() => {
 .campaign-card {
   overflow: hidden;
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 10px;
   background: white;
 }
 
@@ -72,8 +91,17 @@ const progress = computed(() => {
   padding: 24px;
 }
 
-.campaign-content h3 {
-  margin-top: 0;
+.campaign-status {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.campaign-content h2 {
+  margin: 0 0 12px;
   font-size: 1.4rem;
 }
 
@@ -81,17 +109,21 @@ const progress = computed(() => {
   line-height: 1.6;
 }
 
-.progress-info {
+.funding {
+  margin-top: 24px;
+}
+
+.funding-values {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0 8px;
-  font-size: 0.9rem;
+  gap: 10px;
+  margin-bottom: 8px;
 }
 
 .progress-bar {
   height: 8px;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 20px;
   background: #e5e5e5;
 }
 
@@ -100,14 +132,23 @@ const progress = computed(() => {
   background: #222;
 }
 
+.progress-text {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+}
+
 .campaign-button {
   display: inline-block;
   margin-top: 20px;
+  padding: 12px 18px;
+  border-radius: 6px;
+  background: #222;
+  color: white;
   text-decoration: none;
   font-weight: bold;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
   .campaign-content {
     padding: 20px;
   }
