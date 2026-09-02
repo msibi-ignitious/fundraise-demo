@@ -13,10 +13,12 @@ const selectedAmount = ref<number | null>(null)
 
 const customAmount = ref('')
 
+const errorMessage = ref('')
+
 const presetAmounts = [50, 100, 250, 500]
 
 const amount = computed(() => {
-  if (customAmount.value) {
+  if (customAmount.value !== '') {
     return Number(customAmount.value)
   }
 
@@ -26,9 +28,35 @@ const amount = computed(() => {
 const selectAmount = (value: number) => {
   selectedAmount.value = value
   customAmount.value = ''
+  errorMessage.value = ''
+}
+
+const continueDonation = () => {
+  errorMessage.value = ''
+
+  if (amount.value == null) {
+    errorMessage.value = 'Please enter a donation amount.'
+    return
+  }
+
+  if (!Number.isFinite(amount.value)) {
+    errorMessage.value = 'Please enter a valid donation amount.'
+    return
+  }
+
+  if (amount.value <= 0) {
+    errorMessage.value = 'Donation amount must be greater than E0.'
+    return
+  }
+
+  const query = new URLSearchParams({
+    amount: String(amount.value),
+    ...(campaign ? { campaign: String(campaign.id) } : {})
+  })
+
+  navigateTo(`/donate/details?${query.toString()}`)
 }
 </script>
-
 <template>
   <main class="donation-page">
 
@@ -50,7 +78,7 @@ const selectAmount = (value: number) => {
     </div>
 
     <!-- Donation Form -->
-    <form @submit.prevent>
+    <form @submit.prevent="continueDonation" novalidate>
 
       <h2>Choose Donation Amount</h2>
 
@@ -94,6 +122,12 @@ const selectAmount = (value: number) => {
           E{{ amount.toLocaleString() }}
         </strong>
       </div>
+      <p
+        v-if="errorMessage"
+        class="error-message"
+      >
+        {{ errorMessage }}
+      </p>
 
       <button
         type="submit"
@@ -113,7 +147,14 @@ const selectAmount = (value: number) => {
   margin: 0 auto;
   padding: 60px 20px;
 }
-
+.error-message {
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 6px;
+  background: #f8d7da;
+  color: #842029;
+  font-weight: bold;
+}
 .campaign-info {
   margin: 30px 0;
   padding: 20px;
